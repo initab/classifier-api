@@ -1,0 +1,12 @@
+# Test your FastAPI endpoints
+
+POST http://127.0.0.1:8081/api/classify
+Accept: application/json
+Content-Type: application/json
+
+{
+  "text": "Generera en bild av Johan Hansson och sätt den till avatar",
+  "labels": ["sökning", "bildgenerering", "avatarbyte"]
+}
+
+###
