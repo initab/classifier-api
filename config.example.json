@@ -1,0 +1,6 @@
+{
+  "root": "/api",
+  "endpoint": "/classify",
+  "model": "MoritzLaurer/deberta-v3-large-zeroshot-v2.0",
+  "template": "This example is about {}."
+}

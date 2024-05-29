@@ -1,9 +1,16 @@
+import json
+import os
+
 import torch
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline, AutoTokenizer
 
-app = FastAPI(root_path="/api")
+config_path = os.getenv("CLASSIFY_API_CONF", "config.json")
+with open(config_path, "r") as f:
+    config = json.load(f)
+
+app = FastAPI(root_path=config["root"])
 
 
 class Item(BaseModel):
@@ -12,14 +19,14 @@ class Item(BaseModel):
 
 
 tokenizer = AutoTokenizer.from_pretrained(
-    pretrained_model_name_or_path='KBlab/megatron-bert-large-swedish-cased-165-zero-shot',
+    pretrained_model_name_or_path=config["model"],
     model_max_length=512,
     use_fast=True,
 )
 
 classifier = pipeline(
     "zero-shot-classification",
-    model="KBlab/megatron-bert-large-swedish-cased-165-zero-shot",
+    model=config["model"],
     device=0 if torch.cuda.is_available() else -1,
     batch_size=8,
     torch_dtype=torch.float16,
@@ -27,9 +34,9 @@ classifier = pipeline(
 )
 
 
-@app.post("/classify")
+@app.post(config["endpoint"])
 async def classify(item: Item):
-    hypothesis_template = "Detta exempel handlar om {}."
+    hypothesis_template = config["template"]
     results = classifier(
         sequences=item.text,
         candidate_labels=item.labels,

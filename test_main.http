@@ -5,8 +5,8 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "text": "Generera en bild av Johan Hansson och sätt den till avatar",
-  "labels": ["sökning", "bildgenerering", "avatarbyte"]
+  "text": "Make an image of a banana",
+  "labels": ["search", "image generation", "code"]
 }
 
 ###
